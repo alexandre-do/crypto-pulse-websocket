@@ -11,10 +11,10 @@ flowchart TD
         CB["🔵 Coinbase WS<br/>BTC-USD"]
     end
 
-    BIN --> TS["🟦 TS Connectors"]
-    CB --> TS
+    BIN --> PY["🐍 Python Connectors"]
+    CB --> PY
 
-    TS --> KAFKA["📨 Kafka"]
+    PY --> KAFKA["📨 Kafka"]
 
     KAFKA --> TRADES["💱 Trades"]
     KAFKA --> OB["📊 OrderBook"]
@@ -44,7 +44,7 @@ flowchart TD
 **Flow**
 
 1. **Binance / Coinbase WebSockets** – sources of raw trade and order book events for BTC/USDT (Binance) and BTC-USD (Coinbase).
-2. **TS Connectors** – TypeScript services that subscribe to each exchange's streams and publish normalized events onto Kafka, tagged by exchange and symbol.
+2. **Python Connectors** – Python (asyncio) services that subscribe to each exchange's streams and publish normalized events onto Kafka, tagged by exchange and symbol.
 3. **Kafka** – message broker decoupling ingestion from downstream processing; fans out to multiple consumers.
 4. **Trades / OrderBook / Aggregator** – Kafka consumers that process raw events: persisting trades, maintaining order book state, and computing aggregated metrics (OHLCV, volume, etc.).
 5. **PostgreSQL / Redis** – durable storage (PostgreSQL) and low-latency cache/state (Redis) for processed data.
